@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fn: MyString
+  ln: MyString
+  g: MyString
+  yr: 1
+  res: 
+  racer_id: MyString
+  _id: MyString
+
+two:
+  fn: MyString
+  ln: MyString
+  g: MyString
+  yr: 1
+  res: 
+  racer_id: MyString
+  _id: MyString
