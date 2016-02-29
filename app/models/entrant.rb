@@ -7,4 +7,6 @@ class Entrant
   field :o, as: :overall, type: Placing
   field :gender, type: Placing
   field :group, type: Placing
+
+  embeds_many :results, class_name: "LegResult", order: [:"event.o".asc]
 end
