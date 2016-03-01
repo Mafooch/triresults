@@ -36,10 +36,44 @@ class Entrant
   end
 
   def update_total result
-    self.secs = results.inject(0) { |sum, r| sum + r.secs }
+    self.secs = 0
+    results.each { |result| self.secs += result.secs if result.secs }
   end
 
+  RESULTS = { "swim"=>SwimResult,
+              "t1"=>LegResult,
+              "bike"=>BikeResult,
+              "t2"=>LegResult,
+              "run"=>RunResult }
 
+  RESULTS.keys.each do |name|
+    # create_or_find result
+    define_method "#{name}" do
+      result = results.select do |result|
+        name == result.event.name if result.event
+      end.first
+
+      if !result
+        result = RESULTS["#{name}"].new(event: { name: name })
+        results << result
+      end
+      result
+    end
+      # assign event details to result
+    define_method "#{name}=" do |event|
+      event = self.send("#{name}").build_event event.attributes
+    end
+    # expose setter/getter for each property of each result
+    RESULTS["#{name}"].attribute_names.reject { |r| /^_/ === r }.each do |prop|
+      define_method "#{name}_#{prop}" do # Event prop getter
+        event = self.send(name).send prop
+      end
+      define_method "#{name}_#{prop}=" do |value| # Event prop setter
+        event = self.send(name).send "#{prop}=", value
+        update_total nil if /secs/ === prop
+      end
+    end
+  end
 
   def the_race
     race.race
