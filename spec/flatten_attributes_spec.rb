@@ -13,8 +13,8 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
 
   around :each do |example|
     if $continue
-      $continue = false 
-      example.run 
+      $continue = false
+      example.run
       $continue = true unless example.exception
     else
       example.skip
@@ -49,12 +49,12 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       expect(doc["info"]["g"]).to eql "F"
       expect(doc["info"]["yr"]).to eql 1959
       expect(doc["info"]["racer_id"]).to_not be_nil
-    end 
+    end
 
     it "Racer delegation to custom types like Address is accounted for in model" do
       expect(@r.city).to be_nil
       @r.city="Oakland"
-      @r.state="CA" 
+      @r.state="CA"
       expect(@r.info.residence.city).to eql "Oakland"
       expect(@r.info.residence.state).to eql "CA"
       expect(@r.save).to be true
@@ -64,8 +64,8 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       expect(doc["info"]["g"]).to eql "M"
       expect(doc["info"]["yr"]).to eql 1960
       expect(doc["info"]["res"]["city"]).to eql "Oakland"
-      expect(doc["info"]["res"]["state"]).to eql "CA"      
-      expect(doc["info"]["racer_id"]).to_not be_nil      
+      expect(doc["info"]["res"]["state"]).to eql "CA"
+      expect(doc["info"]["racer_id"]).to_not be_nil
     end
   end
 
@@ -98,19 +98,19 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       expect(e_t2.order).to eql Race::DEFAULT_EVENTS["t2"][:order]
       expect(e_t2.name).to eql Race::DEFAULT_EVENTS["t2"][:name]
       expect(e_t2.distance).to eql Race::DEFAULT_EVENTS["t2"][:distance]
-      expect(e_t2.units).to eql Race::DEFAULT_EVENTS["t2"][:units] 
+      expect(e_t2.units).to eql Race::DEFAULT_EVENTS["t2"][:units]
 
       expect(e_run = race.run).to_not be_nil
       expect(e_run).to be_a Event
       expect(e_run.order).to eql Race::DEFAULT_EVENTS["run"][:order]
       expect(e_run.name).to eql Race::DEFAULT_EVENTS["run"][:name]
       expect(e_run.distance).to eql Race::DEFAULT_EVENTS["run"][:distance].to_f
-      expect(e_run.units).to eql Race::DEFAULT_EVENTS["run"][:units]  
+      expect(e_run.units).to eql Race::DEFAULT_EVENTS["run"][:units]
 
       e_run.distance=1000.0
-      e_swim.units="meters"    
+      e_swim.units="meters"
       e_bike.distance=100.0
-      race.events.to_a.each { |e| 
+      race.events.to_a.each { |e|
         case e.name
         when "swim"
           expect(e.units).to eql "meters"
@@ -119,7 +119,7 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
         when "run"
           expect(e.distance).to eql 1000.0
         end
-      }                
+      }
     end
 
     it "Race has a class method called default that takes no parameters and returns a Race with properties" do
@@ -175,10 +175,10 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       entrant.race.name="Houston 500"
       entrant.race.date=Date.new(2016, 8,1)
       expect(entrant.race_name).to eql(entrant.race.name).and eql("Houston 500")
-      expect(entrant.race_date).to eql(entrant.race.date).and eql(Date.new(2016, 8, 1))      
+      expect(entrant.race_date).to eql(entrant.race.date).and eql(Date.new(2016, 8, 1))
     end
 
-    it "Embedded race and racer instances will be in place for access and update" do   
+    it "Embedded race and racer instances will be in place for access and update" do
       expect(Entrant).to embed_one(:race).of_type(RaceRef).with_autobuild
       expect(Entrant).to embed_one(:racer).of_type(RacerInfo).with_autobuild
       expect(e = Entrant.new).to_not be_nil
@@ -214,7 +214,7 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
     end
   end
 
-  context "rq04" do 
+  context "rq04" do
     before :each do
       race = Race.new.tap {|race| ["swim", "t1", "bike", "t2", "run"].each {|event|race.send(event)}}
       expect(@entrant = Entrant.new(:bib=>0, :first_name=>"thing", :last_name=>"One", :racer_gender=>"M")).to_not be_nil
@@ -240,7 +240,7 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       expect(@entrant.bike.event.order).to eql Race::DEFAULT_EVENTS["bike"][:order]
       expect(@entrant.bike.event.name).to eql Race::DEFAULT_EVENTS["bike"][:name]
       expect(@entrant.bike.event.distance).to eql Race::DEFAULT_EVENTS["bike"][:distance].to_f
-      expect(@entrant.bike.event.units).to eql Race::DEFAULT_EVENTS["bike"][:units]      
+      expect(@entrant.bike.event.units).to eql Race::DEFAULT_EVENTS["bike"][:units]
       expect(@entrant.t2).to be_a LegResult
       expect(@entrant.t2.event.order).to eql Race::DEFAULT_EVENTS["t2"][:order]
       expect(@entrant.t2.event.name).to eql Race::DEFAULT_EVENTS["t2"][:name]
@@ -250,7 +250,7 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
       expect(@entrant.run.event.order).to eql Race::DEFAULT_EVENTS["run"][:order]
       expect(@entrant.run.event.name).to eql Race::DEFAULT_EVENTS["run"][:name]
       expect(@entrant.run.event.distance).to eql Race::DEFAULT_EVENTS["run"][:distance].to_f
-      expect(@entrant.run.event.units).to eql Race::DEFAULT_EVENTS["run"][:units]      
+      expect(@entrant.run.event.units).to eql Race::DEFAULT_EVENTS["run"][:units]
     end
 
     it "Entant has methods to flatten access to result secs and update total secs" do
@@ -275,6 +275,6 @@ describe "Module #3 Summative: Implement Attribute Delegation" do
 
 
 
-    
+
   end
 end

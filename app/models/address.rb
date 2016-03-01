@@ -1,10 +1,17 @@
 class Address
   attr_accessor :city, :state, :location
 
-  def initialize doc
-    @city = doc[:city]
-    @state = doc[:state]
-    @location = Point.new doc[:loc][:coordinates][0], doc[:loc][:coordinates][1]
+  def initialize doc = {}
+    @city = doc[:city] || nil
+    @state = doc[:state] || nil
+    if doc[:loc].nil?
+      @location = Point.new nil, nil
+      #NOTE created a location pointing to an Point with nill coordinates instead
+      # of making @location itself nil to avoid mongoize method errors. Is there
+      # a better way?
+    else
+      @location = Point.new doc[:loc][:coordinates][0], doc[:loc][:coordinates][1]
+    end
   end
 
   def mongoize

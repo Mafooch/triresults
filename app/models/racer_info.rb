@@ -9,9 +9,22 @@ class RacerInfo
   field :_id, default: -> { racer_id }
 
   embedded_in :parent, polymorphic: true
-  
+
   validates_presence_of :first_name, :last_name, :gender, :birth_year
   validates_inclusion_of :gender, in: ["M", "F"]
   validates_numericality_of :birth_year, less_than: Date.current.year,
     message: "must be in past"
+
+# use metaprogramming to create getters and setters for through the Address
+# custom type
+  ["city", "state"].each do |action|
+    define_method "#{action}" do
+      self.residence ? self.residence.send("#{action}") : nil
+    end
+    define_method "#{action}=" do |name|
+      object = self.residence ||= Address.new
+      object.send "#{action}=", name
+      self.residence = object
+    end
+  end
 end
