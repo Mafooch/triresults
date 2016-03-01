@@ -9,8 +9,15 @@ class Entrant
   field :group, type: Placing
 
   embeds_many :results, class_name: "LegResult", order: [:"event.o".asc], after_add: :update_total
+  embeds_one :race, class_name: "RaceRef"
 
   def update_total result
     self.secs = results.inject(0) { |sum, r| sum + r.secs }
+  end
+
+  def the_race
+    race.race
+    # first race refers to embedded RaceRef, second one refers to the Race doc
+    # in the other collection
   end
 end
