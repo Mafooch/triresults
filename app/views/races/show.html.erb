@@ -101,7 +101,7 @@
         <td><%= format_minutes entrant.swim_pace_100 %></td>
         <td><%= format_hours entrant.t1_secs %></td>
         <td><%= format_hours entrant.bike_secs %></td>
-        <td><%= entrant.bike_mph.round(1) %></td>
+        <td><%= format_mph entrant.bike_mph %></td>
         <td><%= format_hours entrant.t2_secs %></td>
         <td><%= format_hours entrant.run_secs %></td>
         <td><%= format_minutes entrant.run_mmile %></td>
