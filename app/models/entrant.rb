@@ -22,6 +22,9 @@ class Entrant
   delegate :name, :name=, to: :race, prefix: "race"
   delegate :date, :date=, to: :race, prefix: "race"
 
+  scope :upcoming, -> { where :"race.date".gte => Date.current }
+  scope :past, -> { where :"race.date".lt => Date.current }
+
   def overall_place
     overall.place if overall
   end
@@ -49,9 +52,7 @@ class Entrant
   RESULTS.keys.each do |name|
     # create_or_find result
     define_method "#{name}" do
-      result = results.select do |result|
-        name == result.event.name if result.event
-      end.first
+      result=results.select { |result| name==result.event.name if result.event }.first
 
       if !result
         result = RESULTS["#{name}"].new(event: { name: name })
