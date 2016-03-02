@@ -65,6 +65,21 @@ class Race
     end
   end
 
+  def create_entrant racer
+    entrant = Entrant.new
+    entrant.race = self.attributes.symbolize_keys.slice :_id, :n, :date
+    entrant.racer = racer.info.attributes
+    entrant.group = get_group racer
+    events.each do |event|
+      entrant.send "#{event.name}=", event
+    end
+    if entrant.valid?
+      entrant.bib = next_bib
+    end
+    entrant.save
+    entrant
+  end
+
   def self.default
     Race.new do |race|
       DEFAULT_EVENTS.keys.each { |leg| race.send "#{leg}" }
