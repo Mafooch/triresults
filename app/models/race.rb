@@ -86,6 +86,11 @@ class Race
     end
   end
 
+  def self.upcoming_available_to racer
+    racer_race_ids = racer.races.pluck(:race).map { |race| race[:_id] }
+    upcoming.not_in(id: racer_race_ids)
+  end
+
   before_create do |race|
     race.next_bib = 0
   end
