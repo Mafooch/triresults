@@ -21,6 +21,7 @@ class Api::RacesController < ApplicationController
   end
 
   def update
+    Rails.logger.debug("method=#{request.method}")
     race = Race.find(params[:id])
     race.update race_params
     render json: race, status: :ok
@@ -33,6 +34,11 @@ class Api::RacesController < ApplicationController
       race = Race.create race_params
       render plain: race.name, status: :created
     end
+  end
+
+  def destroy
+    Race.find(params[:id]).destroy
+    render nothing: true, status: :no_content
   end
 
   private
