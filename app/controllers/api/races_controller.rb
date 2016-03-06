@@ -20,6 +20,12 @@ class Api::RacesController < ApplicationController
     end
   end
 
+  def update
+    race = Race.find(params[:id])
+    race.update race_params
+    render json: race, status: :ok
+  end
+
   def create
     if !request.accept || request.accept == "*/*"
       render plain: "#{params[:race][:name]}", status: :created

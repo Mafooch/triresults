@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   end
   resources :races
   namespace :api do
-    resources :races, only: [:index, :show, :create] do
+    resources :races, only: [:index, :show, :create, :update] do
       resources :results, only: [:index, :show]
     end
     resources :racers, only: [:index, :show] do
