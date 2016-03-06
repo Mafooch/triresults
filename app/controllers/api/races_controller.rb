@@ -21,9 +21,15 @@ class Api::RacesController < ApplicationController
 
   def create
     if !request.accept || request.accept == "*/*"
-      render plain: "#{params[:race][:name]}", status: :ok
+      render plain: "#{params[:race][:name]}", status: :created
     else
-
+      race = Race.create(race_params)
+      render plain: race.name, status: :created
     end
+  end
+
+  private
+  def race_params
+    params.require(:race).permit(:name, :date)
   end
 end
