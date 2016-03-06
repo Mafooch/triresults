@@ -15,7 +15,8 @@ class Api::RacesController < ApplicationController
     if !request.accept || request.accept == "*/*"
       render plain: "/api/races/#{params[:id]}"
     else
-
+      race = Race.find params[:id]
+      render json: race, status: :ok
     end
   end
 
@@ -23,7 +24,7 @@ class Api::RacesController < ApplicationController
     if !request.accept || request.accept == "*/*"
       render plain: "#{params[:race][:name]}", status: :created
     else
-      race = Race.create(race_params)
+      race = Race.create race_params
       render plain: race.name, status: :created
     end
   end
