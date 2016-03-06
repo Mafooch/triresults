@@ -45,4 +45,8 @@ class Api::RacesController < ApplicationController
   def race_params
     params.require(:race).permit(:name, :date)
   end
+
+  rescue_from Mongoid::Errors::DocumentNotFound do |exception|
+    render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found
+  end
 end
