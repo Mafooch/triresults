@@ -3,7 +3,9 @@ class Api::RacesController < ApplicationController
   def index
     if !request.accept || request.accept == "*/*"
       # only fire when content type is not specified
-      render plain: "/api/races"
+      offset = params[:offset]
+      limit = params[:limit]
+      render plain: "/api/races, offset=[#{offset}], limit=[#{limit}]"
     else
 
     end
