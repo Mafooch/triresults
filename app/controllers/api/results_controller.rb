@@ -5,8 +5,10 @@ class Api::ResultsController < ApplicationController
     else
       @race = Race.find params[:race_id]
       @entrants = @race.entrants
-      fresh_when last_modified: @entrants.max(:updated_at)
-      render action: :index, status: :ok
+
+      if stale?(etag: @entrants, last_modified: @entrants.max(:updated_at))
+        render action: :index, status: :ok
+      end
     end
   end
 
