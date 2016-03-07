@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :races
   namespace :api do
     resources :races, except: [:new, :edit] do
-      resources :results, only: [:index, :show]
+      resources :results, only: [:index, :show, :update]
     end
     resources :racers, only: [:index, :show] do
       resources :entries, only: [:index, :show]
